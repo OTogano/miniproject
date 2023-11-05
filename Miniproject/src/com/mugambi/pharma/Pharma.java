@@ -16,6 +16,7 @@ public class Pharma extends JFrame{
 
     public Pharma(){
         super("Pharma");//frame title
+        DatabaseService DB =new DatabaseService();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//exits frame when close is clicked
         setContentPane(PharmaMainPanel);//Sets the pharma form GUI design
         //Adds actions when doctor and pharmacist button is clicked
@@ -25,6 +26,7 @@ public class Pharma extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();//closes the frame when close button is clicked
+                DB.closeConnection();
             }
         });
     }
