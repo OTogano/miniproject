@@ -2,8 +2,10 @@
 package com.mugambi.pharma;
 //Import GUI components
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Stack;
 
 public class Pharma extends JFrame{
     //Initialize GUI components
@@ -12,7 +14,6 @@ public class Pharma extends JFrame{
     private JButton doc_button;
     private JButton pharm_button;
     private JButton PharmaClose;
-    private JTextField Copyright_message;
 
     public Pharma(){
         super("Pharma");//frame title
@@ -35,11 +36,13 @@ private void Doctor(){
     Doctor accessDoc=new Doctor();
     accessDoc.getContentPane();
     accessDoc.setVisible(true);
+    dispose();
 }
 private void Pharmacist(){
     //When pharmacist button is clicked, Pharmacist interface is opened
         Pharmacist accessPharmacist=new Pharmacist();
         accessPharmacist.getContentPane();
         accessPharmacist.setVisible(true);
+        dispose();
 }
 }

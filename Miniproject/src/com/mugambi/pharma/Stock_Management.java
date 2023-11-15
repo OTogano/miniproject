@@ -17,7 +17,6 @@ public class Stock_Management extends JFrame {
     private JPanel Stock_Management;
     private JButton backButton;
     private JLabel StockLabel;
-    private JTextField Copyright_message;
     private JTable stock_table;
     private JTextField SearchField;
     private JScrollPane StockTablePane;
@@ -32,6 +31,10 @@ public class Stock_Management extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Pharmacist navigation =new Pharmacist();
+                navigation.getContentPane();
+                navigation.setExtendedState(Pharmacist.MAXIMIZED_BOTH);
+                navigation.setVisible(true);
                 dispose();//Disposes frame when button is clicked
             }
         });
@@ -52,7 +55,7 @@ public class Stock_Management extends JFrame {
             StockTableModel.addRow(rowData);
         }
         }catch (SQLException e){
-            System.out.println("Select ERROR");
+            System.out.println("Select STOCK ERROR");
         }
         SearchField.addKeyListener(new KeyAdapter() {
             @Override
@@ -142,8 +145,12 @@ public class Stock_Management extends JFrame {
                             double PRICE=Double.parseDouble(price.getText());
                             Date EXP=Date.valueOf(exp.getText());
                             connector.UpdateRowStockTable(MED_ID,MEDNAME,QUANTITY,BATCH,PRICE,EXP);
-                            //fix update issue later
-                            StockTableModel.fireTableDataChanged();
+                            StockTableModel.setValueAt(MED_ID,selectedModelRow,0);
+                            StockTableModel.setValueAt(MEDNAME,selectedModelRow,1);
+                            StockTableModel.setValueAt(QUANTITY,selectedModelRow,2);
+                            StockTableModel.setValueAt(BATCH,selectedModelRow,3);
+                            StockTableModel.setValueAt(PRICE,selectedModelRow,4);
+                            StockTableModel.setValueAt(EXP,selectedModelRow,5);
                             Window window=SwingUtilities.getWindowAncestor(inputPanel);
                             if(window!=null){
                                 window.dispose();}
