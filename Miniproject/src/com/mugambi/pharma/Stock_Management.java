@@ -11,7 +11,9 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 public class Stock_Management extends JFrame {
     private JPanel Stock_Management;
@@ -138,6 +140,7 @@ public class Stock_Management extends JFrame {
                     SaveChanges.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                            try {
                             int MED_ID= Integer.parseInt(medID.getText());
                             String MEDNAME=medname.getText();
                             int QUANTITY= Integer.parseInt(quantity.getText());
@@ -153,10 +156,13 @@ public class Stock_Management extends JFrame {
                             StockTableModel.setValueAt(EXP,selectedModelRow,5);
                             Window window=SwingUtilities.getWindowAncestor(inputPanel);
                             if(window!=null){
-                                window.dispose();}
+                                window.dispose();}}catch (Exception A){
+                                JOptionPane.showMessageDialog(null,"Please Ensure all Fields are filled in their correct format");
+                            }
                         }
                     });
                     inputDialog.add(inputPanel);
+                    inputDialog.setLocationRelativeTo(null);
                     inputDialog.pack();
                     inputDialog.setVisible(true);
                 }
@@ -203,6 +209,7 @@ public class Stock_Management extends JFrame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                try {
                 int updateID= Integer.parseInt(medID.getText());
                 String updateName= medname.getText();
                 int updateQuantity= Integer.parseInt(quantity.getText());
@@ -213,14 +220,32 @@ public class Stock_Management extends JFrame {
                 if (rowIndex==-1){
                     //Add new row to table
                     connector.InsertRowStockTable(updateID,updateName,updateQuantity,upatebatch,updatePrice,updateexp);
-                    StockTableModel.addRow(new Object[]{updateID,updateName,updateQuantity,upatebatch,upatebatch,updateexp});
+                    int columnIndexToCheck=0;
+                    Set<Object> uniqueValues=new HashSet<>();
+                    boolean duplicatesFound=false;
+                    for(int row=0;row<StockTableModel.getRowCount(); row++){
+                        Object value=StockTableModel.getValueAt(row,columnIndexToCheck);
+                        if(!uniqueValues.add(value)){
+                            duplicatesFound=true;
+                            break;
+                        }
+                    }
+                    if (duplicatesFound){
+                        StockTableModel.addRow(new Object[]{updateID,updateName,updateQuantity,upatebatch,upatebatch,updateexp});
+
+                    }else {System.out.println("Duplicate Primary key detected!");
+                    }
                 }
                 AddDialog.dispose();
+                }catch (Exception A) {
+                    JOptionPane.showMessageDialog(null, "Please Ensure all Fields are filled in their correct format");
+                }
             }
         });
         addPanel.add(saveButton);
         AddDialog.add(addPanel);
         AddDialog.pack();
+        AddDialog.setLocationRelativeTo(null);
         AddDialog.setVisible(true);
     }
 }
